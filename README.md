@@ -1,88 +1,83 @@
-# Capstone Project Requirements
+# Predicting Voter Choice in Senate Races
 
-## Introduction
+## Abstract 
 
-In this lesson, we'll discuss the requirements for our **Capstone Project**!
+Although control of the Senate has always been an important goal for both major parties, 2020 has thrown this battle into the spotlight. Because of the importance of these races, it might be useful to know if a person's vote can be predicted by gathering information about them and their state. To answer this questions we gathered demographic, economic, and election information for all states from various sources with a previously conducted survey of voters. Data were collected from a variety of sources. We set out to predict whether someone registered with one of the two major parties would defect and how independents would vote. In both cases, a random forest model was the most accurate. 
 
-## Objectives
+We can achieve 92% accuracy in predicting whether registered Democrats and Republicans will vote with their party in Senate races and 91% accuracy in predicting which candidate people registered with each party voted for. While in both cases having a higher population and being younger was associated with voting for a Democrat and views of other elected officials were very influential, there were some differences. For major-party-affiliated voters, a higher percentage of non-white individuals living in their state and increased population density and percentage of non-citizens was associated with Democrats defecting to the Republican party while the opposite was true for Democrats who voted for a Republican. Meanwhile unemployment was a significant factor with independent voters, who typically voted for Republicans when unemployment was high.     
 
-You will be able to:
+## Business Problem
 
-* Describe all required aspects of the final project
-* Describe what constitutes a successful project
+Being able to predict why certain voters vote in certain ways can inform campaigns how to more efficiently target the kind of voters who would be more likely to vote for them.  
 
-## Introduction
+## Data
 
-Congratulations on making it to the final project! It's been a long journey, but we can finally see the light at the end of the tunnel!
+There was a large compilation of state policy and demographic variables made available by the Michigan State University that was used in this project. Senate data by year and voting eligible population data was found on data.world. However there was not consistent data across years. For population level variables, we turned mostly to the Census Bureau, sorting through their tables from each year. However we also used data from the Kaiser Family Foundation, the Congressional Research Service, Iowa State University, and Harvard’s dataverse to fill in missing data. We also used a large-scale survey of voters in the Harvard dataverse.
 
-![Actual Footage of you seeing the light at the end of the tunnel](https://raw.githubusercontent.com/learn-co-curriculum/dsc-capstone-project-v2/master/end-of-tunnel.gif)
+Some variables, such as which places were impacted by the Supreme Court case Shelby v Holder, were not available in the form of a data table and simply researched to understand which states were affected and what impact the case had on these states’ elections. Other variables, such as each state’s policy on voter ID and other such laws in recent years, had to be manually inputted. Thanks to various news articles and the National Conference of State Legislatures, we were able to pinpoint when changes in the laws occurred and input the data accordingly. In addition we scrapped unemployment data that had not being compiled and put in a downloadable form from the U.S. Bureau of Labor Statistics.
 
-Now that you've learned everything we have to teach you, it's time to show off and flex your data science muscles with your own **_Capstone Project_**! This project will allow you to showcase everything you've learned as a data scientist to by completing a professional-level data science project of your choosing. This project will be significantly larger than any project you've completed so far, and will be the crown jewel of your portfolio. A strong capstone project is the single most important thing you can do to get the attention of potential employers, so be prepared to put as much effort into this project as possible - the results will be **_worth it!_**
+All data is linked when used and sources are cited for the appropriate works at the bottom of this document and the notebook.
 
-![Your portfolio brings all the employers to your inbox](https://raw.githubusercontent.com/learn-co-curriculum/dsc-capstone-project-v2/master/milkshake.gif)
 
-## Topic Requirements
+## Methods
 
-Your project should develop a data product or analysis related to a single topic. You are completely free to choose any topic that interests you, but keep in mind that you will need to complete this project end-to-end, including sourcing your own data. When choosing a topic, think through these questions:  
+After combining the data using pandasql, we analyzed it using logistic regressin, random forest, XGBoost, and voting classifier models. We took the best models for each question and examined feature importances. 
 
-* What would I be motivated to work on?
-* What data could I use?
-* How could an individual or organization use my product or findings?
-* What will I be able to accomplish in the time I have available?
-* What challenges do I foresee with this project?
+## Results
 
-## Technical Requirements
+Using a random forest model with tuned hypterparameters, we were able correctly classify Democrats who would vote with their party, Republicans who would vote with their party, Democrats who voted for Republicans, and Republicans who voted for Democrats with 92% accuracy.  
+![against_party_cm](Images/against_party_cm.jpg)
+The model correctly predicted people voting with their party 93% of the time, Republicans who voted for the Democratic candidate 77% of the time, and Democrats who voted for the Republican candidate 72% of the time.
 
-Your project must meet the following technical requirements:
+![against_party_fi](Images/against_party_fi.jpg)
+The model identified the 15 most influential features, which include the person's party and presidential approval.
 
-1. **_No Off-The-Shelf Datasets_**. This project is a chance for you to highlight your critical thinking and data sourcing skills by finding a good dataset to answer a useful question. You _can_ use a pre-existing dataset, but you should consider combining it with other datasets and/or engineering your own features. The goal is to showcase your ability to find and work with data, so just grabbing a squeaky-clean dataset is out of the question.
+Using a random forest model with tuned hypterparameters, we were able predict the voting choice of voters who did not identify with either party 91% accurately. 
 
-2. **_Strong Data Exploration, with at least 4 relevant data visualizations._**  There are few skills that impress employers more than the ability to dive into a new dataset and produce engaging visualizations that communicate important information. For this project, anything worth knowing is worth visualizing. Level up your project by digging into more advanced visualization libraries like seaborn!
+![swing_cm](Images/swing_cm.jpg)
+The model correctly predicted those who voted for Democrats 90% of the time and those who voted for Republicans 91% of the time.
 
-3. **_Makes use of Supervised Learning_**. It is great to use **_Unsupervised Learning_** techniques as needed in your project (for instance, segmentation with clustering algorithms), but supervised learning should play a central role in answering your question. 
+![swing_fi](Images/swing_fi.jpg)
+The model identified the 15 most influential features, which include presidential and senator approval.
 
-4. **_Explicitly makes use of a Data Science Process such as OSEMN or CRISP-DM_**. Select a Data Science Process to use to give structure to your project. Each step in the process should correspond to a section in your Jupyter Notebook.  
 
-5. **_A well-defined goal with clearly presented results._** Your project should provide any background context needed to understand the project you are working on and why it's important. For instance, if you are trying to detect fault lines using Earthquake data, you should review the topic and your dataset so that the reader can understand your work.  Similarly, the results of your project should be clearly communicated. Do not just tell your audience the final accuracy of your models--be sure to answer "big picture" questions as well. For instance: Would you recommend shipping this model to production, or is more work needed? 
+## Recomendations
 
-**_NOTE:_** Inconclusive results are okay--from a purely scientific perspective, they are no more or less important or valuable than any other kinds of results. If your results are inconclusive, you should discuss what your next steps would be from there. For instance, what do you think it would take to get conclusive results--more data? Different data that was unavailable? Both? 
+<ul>
+<li>Democrats should prioritize voters in states with a higher percentage of non-white individuals and greater numbers of voting-age and voting-eligible because they are more likely to be potential voters while Republicans should focus on the opposite.</li>
+<li> Likewise Democrats should focus on states where population density and the percentage of non-citizens is going up.</li>
+<li>Focus on unemployment is a strong position for Republicans. Democrats need to present a stronger case to swing voters when unemployment is going up.</li>
+<li>Both parties must find ways to mitigate the impact of disapproval of the president and their other senator when their party is in power.</li>  
+</ul>
 
-## Requirements for Online Students Only
 
-### Deliverables
+## Limitations
 
-For online students, the deliverables for this project consist of the following three components:
+<ul>
+<li>We did not examine variables that are related to individuals choosing to vote or not to vote, a crucial factors in winning elections.</li>
+<li>Many of the variables in the Correlates of State Policy Project did not cover the time period we were examining so it is possible we left out an important variable.</li>
+<li>We did not have access to see how the same people voted over time, which might provide further insights.</li>
+<li>In the future it might be useful to only examine states where Senate seats are likely to flip or have in the past flipped.</li> 
+<li>There are still some unexplained important features.</li>
+</ul>
 
-1. A Jupyter notebook for a presentation.
-  * The Jupyter notebook will have two components:
-    1. An **_Abstract_** section that briefly explains your problem, your methodology, and your findings, and business recommendations as a result of your findings. This section should be 1-2 paragraphs long.  
-    2. The technical analysis for a data science audience. This detailed technical analysis should explicitly follow a Data Science Process as outlined in the previous section. It should be well-formatted and organized, and should contain all code, visualizations, and detailed explanations/analysis.
-    
-2. An organized **README.md** file in the GitHub repository containing your project code that describes the contents of the repository. This file should be the source of information for navigating through all the code in your repository. 
-    
-3. A blog post showcasing your project, with a focus on your methodology and findings. A well-written blog post about your project will probably be the first thing most recruiters and hiring managers see, so really take the time to polish up this blog post and explain your project, methodology, and findings/business recommendations in a clear, concise manner. This blog post should cover everything important about your project, but remember that your audience for this blog post will largely be non-technical. Your blog post should definitely contain visualizations, code snippets, and anything else you find important, but don't get bogged down trying to explain highly technical concepts. Your blog post should provide a link to the Github repository containing your actual project, for people that want to really dive into the technical aspects of your project.
-* Refer back to the [Blogging Guidelines](https://github.com/learn-co-curriculum/dsc-welcome-blogging) for the technical requirements and blog ideas.
 
-### Rubric 
+## References
 
-Online students can find a PDF of the rubric for the final capstone project [here](https://github.com/learn-co-curriculum/dsc-capstone-project-v2/blob/master/online_capstone_project_rubric.pdf).
-
-## Requirements for On-Campus Students Only
-
-For on-campus students, your project will be evaluated based on the contents of your GitHub repo, which must contain the following three components:
-
-1. A Jupyter notebook     
-2. An **README.md** file 
-3. Presentation slides
-
-The requirements for these components are described in detail in the rubric for the final capstone project [here](https://docs.google.com/spreadsheets/d/1YUC5_QVu8BEd7xBJumzspH40-KuJtL9KQInQYXGi5bE/edit?usp=sharing). You can learn how your teacher will use the rubric to review the project [here](https://github.com/learn-co-curriculum/dsc-campus-capstone-project-review).
-
-## Example Student Project
-
-Take a look at this [technical report](https://github.com/paulinaczheng/twitter_flu_tracking) from a Flatiron student that used tweet data to predict the weekly number of flu cases during flu season. Pay attention to how well structured the project is, and how much she relies on great visualizations to tell her story for her. Your explanations don't have to be wordy - a visualization is worth a thousand words!
-
-## Summary
-
-The Capstone Project is the most critical part of the program. It gives you a chance to bring together all the skills you've learned into realistic projects and to practice key "business judgement" and communication skills.  Most importantly, it provides employers with strong signal about your technical abilities, and allow you to show the world what an amazing Data Scientist you've become!
-
-The projects are serious and important - they can be passed and they can be failed. Take the project seriously, put the time in, ask for help from your peers or instructors early and often if you need it, and treat the review as a job interview and you'll do great. We're rooting for you to succeed and we're only going to ask you to take a review again if we believe that you need to. We'll also provide open and honest feedback so you can improve as quickly and efficiently as possible.
+<ul>
+<li>Kuriwaki, Shiro, 2020, "Cumulative CCES Common Content", https://doi.org/10.7910/DVN/II2DB6, Harvard Dataverse, V5
+Kelly, Nathan J., and Christopher Witko. “Government Ideology and Unemployment in the U.S. States.” State Politics &amp; Policy Quarterly 14.4 (2014): 389–413.</li>
+<li>Klarner, Carl, 2013, “State Economic Data”, https://doi.org/10.7910/DVN/KMWN7N, Harvard Dataverse, V1
+University of Kentucky Center for Poverty Research. 2019. “UKCPR National Welfare Data, 1980-2017.” Lexington, KY. http://ukcpr.org/resources/national-welfare-data</li>
+<li>Iowa Community Indicators Program. 2019. "Annual Unemployment Rates by State." Ames, IA. https://www.icip.iastate.edu/tables/employment/unemployment-states</li>
+<li>Caughey, Devin, and Christopher Warshaw. 2015. “The Dynamics of State Policy Liberalism, 1936–2014.” American Journal of Political Science, September. doi: 10.1111/ajps.12219. https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/ZXZMJB</li>
+<li>Klarner, Carl, 2013, “Governors Dataset”, https://doi.org/10.7910/DVN/PQ0Y1N, Harvard Dataverse, V1</li>
+<li>Biggers, Daniel R., and Michael J. Hanmer. “Understanding the adoption of voter identification laws in the American states.” American Politics Research 45.4 (2017): 560-588.</li>
+<li>Frederick J. Boehmke; Mark Brockway; Bruce Desmarais; Jeffrey J. Harden; Scott LaCombe; Fridolin Linder; Hanna Wallach, 2018, “State Policy Innovation and Diffusion (SPID) Database v1.0”, https://doi.org/10.7910/DVN/CVYSR7</li>
+<li>Boehmke, Frederick J., and Paul Skinner. “State policy innovativeness revisited.” State Politics &amp; Policy Quarterly 12.3 (2012): 303-329.</li>
+<li>Kelly, Nathan J., and Christopher Witko. “Government Ideology and Unemployment in the U.S. States.” State Politics &amp; Policy Quarterly 14.4 (2014): 389–413.</li>
+<li>Brian Schaffner; Stephen Ansolabehere; Sam Luks, 2019, "CCES Common Content, 2018", https://doi.org/10.7910/DVN/ZSBZ7K, Harvard Dataverse, V6, UNF:6:hFVU8vQ/SLTMUXPgmUw3JQ== [fileUNF]</li>
+<li>Stephen Ansolabehere, 2010, "CCES Common Content, 2006", https://doi.org/10.7910/DVN/Q8HC9N, Harvard Dataverse, V4, UNF:5:Zz4+e5bz7lzeLOjQCUk+lw== [fileUNF]</li>
+<li>The Pew Charitable Trusts; Pettigrew, Stephen; Stewart, Charles, 2013, "Essential Files to Generate Pew Elections Performance Index", https://doi.org/10.7910/DVN/WOV3HY, Harvard Dataverse, V12</li>
+<li>MIT Election Data and Science Lab, 2017, "U.S. Senate 1976–2018", https://doi.org/10.7910/DVN/PEJ5QU, Harvard Dataverse, V4, UNF:6:WzSZLQX8O9Nk6RKWwkjx9g== [fileUNF]</li>
+</ul>
